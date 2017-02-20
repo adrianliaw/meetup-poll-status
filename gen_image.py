@@ -1,10 +1,14 @@
 import requests
+import requests_cache
 import re
 from bs4 import BeautifulSoup
 from PIL import Image, ImageDraw, ImageFont
 from collections import OrderedDict
 from operator import itemgetter
+from urllib.error import URLError
 
+
+requests_cache.install_cache("meetup_polls", expire_after=180)
 
 votes_re = re.compile("(?P<n_votes>\d+) votes?")
 
@@ -13,6 +17,8 @@ def get_polls(group, poll_id):
     soup = BeautifulSoup(res.text, "lxml")
 
     votes = []
+    if not soup.select(".poll .line"):
+        raise URLError("Poll doesn't exists")
     for entry in soup.select(".poll .line"):
         count_text = entry.find(class_="count").text.strip()
         match = votes_re.match(count_text) or {"n_votes": 0}
