@@ -30,7 +30,7 @@ def get_polls(group, poll_id):
     return votes
 
 
-default_font = ImageFont.truetype("fonts/儷黑-pro.ttf", 20)
+default_font = ImageFont.truetype("fonts/helvetica-normal.ttf", 20)
 
 def generate_image(votes, bar_width=200, bar_height=20, line_height=50,
                    side_margin=50, margin_between=20, bar_colour="#4C72B0",
